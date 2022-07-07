@@ -1,17 +1,22 @@
-import React, { useState } from "react"
-import { useEffect } from "react"
-import { useRef } from "react"
-import { useSelector, useDispatch } from 'react-redux'
+import React, {useState} from "react"
+import {useEffect} from "react"
+import {useRef} from "react"
+import {useSelector, useDispatch} from 'react-redux'
 import {selectSort, setSort} from "../redux/slices/filterSlice"
 
 
-export const list = [
-    { name: "популярности (DESC)", sortProperty: "rating" },
-    { name: "популярности (ASC)", sortProperty: "-rating" },
-    { name: "цене (DESK)", sortProperty: "price" },
-    { name: "цене (ASC)", sortProperty: "-price" },
-    { name: "алфавиту (DESK)", sortProperty: "title" },
-    { name: "алфавиту (ASK)", sortProperty: "-title" }
+type ListType = {
+    name: string
+    sortProperty: string
+}
+
+export const list: ListType[] = [
+    {name: "популярности (DESC)", sortProperty: "rating"},
+    {name: "популярности (ASC)", sortProperty: "-rating"},
+    {name: "цене (DESK)", sortProperty: "price"},
+    {name: "цене (ASC)", sortProperty: "-price"},
+    {name: "алфавиту (DESK)", sortProperty: "title"},
+    {name: "алфавиту (ASK)", sortProperty: "-title"}
 ]
 
 function Sort() {
@@ -19,25 +24,25 @@ function Sort() {
     const dispatch = useDispatch()
 
     const sort = useSelector(selectSort)
-    const sortRef = useRef()
+    const sortRef = useRef<HTMLDivElement>(null)
     const [open, setOpen] = useState(false)
 
-    const onClickListItem = (obj) => {
+    const onClickListItem = (obj: ListType) => {
         dispatch(setSort(obj))
         setOpen(false)
     }
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.path.includes(sortRef.current)) {
-                setOpen(false)
+            const handleClickOutside = (event: any) => {
+                if (!event.path.includes(sortRef.current)) {
+                    setOpen(false)
+                }
             }
-        }
-        document.body.addEventListener('click', handleClickOutside)
-        return () => {
-            document.body.removeEventListener('click', handleClickOutside)
-        }
-    },
+            document.body.addEventListener('click', handleClickOutside)
+            return () => {
+                document.body.removeEventListener('click', handleClickOutside)
+            }
+        },
         [])
     return (
         <div ref={sortRef} className="sort">
@@ -64,8 +69,8 @@ function Sort() {
                         return (
                             <li
                                 onClick={() => onClickListItem(item)}
-                                className={sort.sortProperty === item.sortProperty && "active"}
-                                key={item.id} >{item.name}</li>
+                                className={sort.sortProperty === item.sortProperty ? "active" : undefined}
+                                key={i}>{item.name}</li>
                         )
                     })}
                 </ul>

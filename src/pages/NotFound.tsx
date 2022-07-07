@@ -1,10 +1,10 @@
 import React from 'react';
 import NotFoundBlock from '../components/NotFoundBlock';
 
-function NotFound(props) {
+const NotFound: React.FC = () => {
     return (
         <>
-            <NotFoundBlock />
+            <NotFoundBlock/>
         </>
     );
 }

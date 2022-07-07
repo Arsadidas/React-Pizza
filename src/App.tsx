@@ -8,7 +8,7 @@ import './scss/app.scss'
 import FullPizza from "./pages/FullPizza";
 import Mainlayout from "./layouts/Mainlayout";
 
-const App = () => {
+const App: React.FC = () => {
 
     return (
         <Routes>
