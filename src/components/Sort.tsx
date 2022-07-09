@@ -1,22 +1,24 @@
-import React, {useState} from "react"
-import {useEffect} from "react"
-import {useRef} from "react"
-import {useSelector, useDispatch} from 'react-redux'
-import {selectSort, setSort} from "../redux/slices/filterSlice"
+import React, {useEffect, useRef, useState} from "react"
+import {useDispatch, useSelector} from 'react-redux'
+import {selectSort, setSort, SortPropertyEnum} from "../redux/slices/filterSlice"
 
 
 type ListType = {
     name: string
-    sortProperty: string
+    sortProperty: SortPropertyEnum
+}
+
+type PopupClick = MouseEvent & {
+    path: Node[]
 }
 
 export const list: ListType[] = [
-    {name: "популярности (DESC)", sortProperty: "rating"},
-    {name: "популярности (ASC)", sortProperty: "-rating"},
-    {name: "цене (DESK)", sortProperty: "price"},
-    {name: "цене (ASC)", sortProperty: "-price"},
-    {name: "алфавиту (DESK)", sortProperty: "title"},
-    {name: "алфавиту (ASK)", sortProperty: "-title"}
+    {name: "популярности (DESC)", sortProperty: SortPropertyEnum.PRICE_DESK},
+    {name: "популярности (ASC)", sortProperty: SortPropertyEnum.RATING_ASK},
+    {name: "цене (DESK)", sortProperty: SortPropertyEnum.PRICE_DESK},
+    {name: "цене (ASC)", sortProperty: SortPropertyEnum.PRICE_ASK},
+    {name: "алфавиту (DESK)", sortProperty: SortPropertyEnum.TITLE_DESK},
+    {name: "алфавиту (ASK)", sortProperty: SortPropertyEnum.TITLE_ASK}
 ]
 
 function Sort() {
@@ -33,8 +35,9 @@ function Sort() {
     }
 
     useEffect(() => {
-            const handleClickOutside = (event: any) => {
-                if (!event.path.includes(sortRef.current)) {
+            const handleClickOutside = (event: MouseEvent) => {
+                const _event = event as PopupClick
+                if (sortRef.current && !_event.path.includes(sortRef.current)) {
                     setOpen(false)
                 }
             }
